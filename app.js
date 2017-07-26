@@ -4,23 +4,33 @@
 const Koa = require('koa');
 //注意require('koa-router')是一个函数，需要调用
 const router = require('koa-router')();
+const bodyParser = require('koa-bodyparser');
 
 const app = new Koa();
 app.use(async (ctx,next) => {
-    //这种console.log的语法第一次见。es6字符串模板。
+    //这种console.log的语法第一次见。es6模板字符串。
     // console.log(`${ctx.request.method} ${ctx.request.url}`);
     //ctx.request.method 简写 ctx.method   ctx.request.url 简写 ctx.url
     console.log(ctx.method,ctx.url);
     await next()
 });
-//:name 动态路由
-router.get('/hello/:name',async (ctx,next) => {
-    var name = ctx.params.name;
-    ctx.response.body = `<h1>hello,${name}<h1/>`
-});
 router.get('/',async (ctx,next) => {
-    ctx.response.body = `<h1>index . 首页<h1>`
+    ctx.body=`<h1>首页 . index<h1>
+              <form action="/signin" method="post">
+                <p>用户名：<input type="text" name="name"></p>
+                <p>密码：<input type="password" name="password"></p>
+                <p><input type="submit" value="提交"></p>
+              <form/>`
 });
+router.post('/signin',async (ctx,next) => {
+    var name = ctx.request.body.name || ''
+    var password = ctx.request.body.password || ''
+    console.log(`用户名------${name},密码---------${password}`)
+    ctx.body=`<h1>welcome ${name}<h1>
+             <a href="/">返回首页</a>`
+});
+//使用bodyPaser中间件 必须在router前面
+app.use(bodyParser());
 //使用router中间件
 app.use(router.routes());
 
