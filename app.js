@@ -2,25 +2,27 @@
  * Created by yanhaoqi on 2017/7/25.
  */
 const Koa = require('koa');
+//注意require('koa-router')是一个函数，需要调用
+const router = require('koa-router')();
+
 const app = new Koa();
 app.use(async (ctx,next) => {
-    //这种console.log的语法第一次见，不过没看出有啥好处，效果和我下面那句一样。。。
+    //这种console.log的语法第一次见。es6字符串模板。
     // console.log(`${ctx.request.method} ${ctx.request.url}`);
     //ctx.request.method 简写 ctx.method   ctx.request.url 简写 ctx.url
     console.log(ctx.method,ctx.url);
     await next()
 });
-app.use(async (ctx,next) => {
-    const start = new Date().getTime();
-    await next();
-    const ms = new Date().getTime() - start;
-    console.log('耗费时间: ',ms)
+//:name 动态路由
+router.get('/hello/:name',async (ctx,next) => {
+    var name = ctx.params.name;
+    ctx.response.body = `<h1>hello,${name}<h1/>`
 });
-app.use(async (ctx,next) => {
-    await next();
-    ctx.response.type = 'text/html';
-    ctx.response.body = '<h1>Hello, koa2!</h1>';
+router.get('/',async (ctx,next) => {
+    ctx.response.body = `<h1>index . 首页<h1>`
 });
+//使用router中间件
+app.use(router.routes());
 
 // 在端口3000监听:
 app.listen(3000);
