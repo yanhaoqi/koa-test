@@ -16,7 +16,9 @@ app.use(async (ctx,next) => {
 });
 router.get('/',async (ctx,next) => {
     ctx.body=`<h1>首页 . index<h1>
+              <!--action属性 请求的路径 method 请求的方法-->
               <form action="/signin" method="post">
+                <!--name属性 post请求存放在请求体中的字段名-->
                 <p>用户名：<input type="text" name="name"></p>
                 <p>密码：<input type="password" name="password"></p>
                 <p><input type="submit" value="提交"></p>
