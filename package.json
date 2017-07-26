@@ -1,0 +1,19 @@
+{
+  "name":"koatest",
+  "version":"1.0.0",
+  "description": "Hello Koa 2 example with async",
+  "main":"app.js",
+  "scripts":{
+    "start":"node --harmony app.js"
+  },
+  "keywords":["koa","async"],
+  "author":"yanhaoqi",
+  "license":"Apache-2.0",
+  "repostory":{
+    "type":"git",
+    "url":"https://github.com/yanhaoqi/koa-test.git"
+  },
+  "dependencies":{
+    "koa":"2.0.0"
+  }
+}
